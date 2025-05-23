@@ -1,3 +1,26 @@
-node_modules
+node_modules/
+dist/
+build/
 # Keep environment variables out of version control
 .env
+.env.local
+.env.*.local
+# Prisma
+/prisma/generated/          
+prisma/migrations/*        
+*.sqlite  
+.env
+
+# Docker
+docker-compose.override.yml    # local overrides often not needed in repo
+**/Dockerfile*                 # Sometimes people ignore generated Dockerfiles, but usually keep these
+**/docker-compose*.yml         # Sometimes local overrides or env-specific files
+**/.dockerignore
+
+# OS files
+.DS_Store
+
+# IDE/editor settings 
+.vscode/
+*.sublime-project
+*.sublime-workspace
