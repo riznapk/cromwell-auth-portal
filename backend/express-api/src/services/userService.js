@@ -64,6 +64,5 @@ exports.loginUser = async ({ email, password }) => {
     // Remove password from the response
     user.password = undefined;
   }
-
   return user;
 };
