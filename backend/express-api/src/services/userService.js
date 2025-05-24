@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { is } = require("type-is");
 
 // Function to create a new user
 exports.createUser = async ({ firstName, lastName, email, password }) => {
@@ -34,10 +35,10 @@ exports.createUser = async ({ firstName, lastName, email, password }) => {
     process.env.JWT_SECRET,
     { expiresIn: "2h" }
   );
-  user.token = token;
-  // Remove password from the response
-  user.password = undefined;
-  return user;
+  // user.token = token;
+  // user.password = undefined; // Remove password from the response
+
+  return { user: { ...user, password: undefined, token }, token };
 };
 
 // Function to login a user
@@ -51,7 +52,8 @@ exports.loginUser = async ({ email, password }) => {
     throw new Error("User not found");
   }
   // Check if the password is correct
-  if (user && (await bcrypt.compare(password, user.password))) {
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (user && isPasswordValid) {
     const token = jwt.sign(
       {
         id: user.id,
@@ -60,9 +62,13 @@ exports.loginUser = async ({ email, password }) => {
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
-    user.token = token;
+
+    // user.token = token;
     // Remove password from the response
-    user.password = undefined;
+    // user.password = undefined;
+
+    return { user: { ...user, password: undefined, token }, token };
+  } else {
+    throw new Error("Invalid password");
   }
-  return user;
 };

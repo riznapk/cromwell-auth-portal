@@ -8,4 +8,4 @@ WORKDIR /app
 RUN if [ ! -f package.json ]; then npm init -y; fi
 
 # Install dependencies if package.json exists or was created
-RUN npm install express prisma @prisma/client swagger-jsdoc swagger-ui-express swagger-autogen nodemon joi bcrypt cookie-parser jsonwebtoken dotenv
+RUN npm install express prisma @prisma/client swagger-jsdoc swagger-ui-express swagger-autogen nodemon joi bcrypt cookie-parser jsonwebtoken dotenv cors
