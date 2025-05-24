@@ -4,8 +4,12 @@ export const theme = createTheme({
     primary: {
       main: "#ff5100",
     },
+    text: {
+      primary: "#333333",
+      secondary: "#1C355E",
+    },
   },
   typography: {
-    button: {},
+    fontFamily: '"Averta", Arial, sans-serif',
   },
 });

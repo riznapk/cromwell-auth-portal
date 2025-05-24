@@ -1,7 +1,12 @@
-import React from "react";
+import { Typography, Container, Grid } from "@mui/material";
+import CustomBanner from "../../common/components/CustomBanner";
 
 function Home() {
-  return <div>Home</div>;
+  return (
+    <Grid Container sx={{ display: "flex" }} spacing={2}>
+      <CustomBanner />
+    </Grid>
+  );
 }
 
 export default Home;
