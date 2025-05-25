@@ -5,7 +5,7 @@ import helpBanner from "../../../assets/images/help-and-support.png";
 function Banner() {
   return (
     <Grid container sx={styles.container}>
-      <Grid item sm={12} md={6}>
+      <Grid size={{ xs: 12, sm: 6, md: 6 }}>
         {
           /* <img src={helpBanner} alt="help and support" sx={styles.image} /> */
           <Box
@@ -16,7 +16,7 @@ function Banner() {
           />
         }
       </Grid>
-      <Grid item sm={12} md={6}>
+      <Grid size={{ xs: 12, sm: 6, md: 6 }}>
         <Box
           component="img"
           src={catalogue}

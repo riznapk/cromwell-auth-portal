@@ -1,41 +1,73 @@
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Link, Box } from "@mui/material";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import { Link as RouterLink } from "react-router-dom";
 
 function CustomBanner({
   bgImage,
   bgColor = "primary.main",
-  borderColor = "#D8DFE1",
   text = "Welcome to Cromwell",
-  buttonText = "Shop Now",
-  onButtonClick = () => {},
+  textColor = "#FFFFFF",
+  subText = "",
+  bannerLink = "/",
 }) {
+  const style = styles({ bgImage, bgColor, textColor });
   return (
-    <Paper sx={styles({ bgImage, bgColor, borderColor })}>
-      <Typography variant="h4" sx={styles.Typography}>
-        Welcome to Cromwell
-      </Typography>
-      <Button variant="contained" color="secondary" sx={styles.button}>
-        Shop Now
-      </Button>
-    </Paper>
+    <Link
+      component={RouterLink}
+      to={bannerLink}
+      underline="none"
+      sx={style.bannerLink}
+    >
+      <Paper sx={style.paper}>
+        <Box>
+          <Typography variant="h5" sx={style.Typography}>
+            {text}
+          </Typography>
+          <Typography variant="h6" sx={style.subText} className="subText">
+            {subText}
+          </Typography>
+        </Box>
+
+        <ArrowForwardIosSharpIcon sx={style.icon} />
+      </Paper>
+    </Link>
   );
 }
 
-const styles = ({ bgImage, bgColor, borderColor }) => ({
+const styles = ({ bgImage, bgColor, textColor }) => ({
   paper: {
+    // width: "450px",
     padding: 2,
-    borderRadius: 2,
     display: "flex",
     flexDirection: "column",
+    minHeight: "250px",
     justifyContent: "space-between",
-    height: "200px",
     backgroundColor: bgColor,
     backgroundImage: bgImage ? `url(${bgImage})` : "none",
     backgroundSize: "cover",
-    backgroundPosition: "center",
+    // backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
   },
-  Typography: { textAlign: "left" },
+  Typography: { textAlign: "left", color: textColor },
+  subText: {
+    display: "none",
+    color: textColor,
+    textAlign: "left",
+  },
   button: { alignSelf: "flex-end" },
+  icon: {
+    alignSelf: "flex-end",
+    color: textColor,
+  },
+  bannerLink: {
+    "&:hover > .MuiPaper-root": {
+      backgroundImage: "none",
+      backgroundColor: "primary.main",
+    },
+    "&:hover > .MuiPaper-root .subText": {
+      display: "block",
+    },
+  },
 });
 
 export default CustomBanner;

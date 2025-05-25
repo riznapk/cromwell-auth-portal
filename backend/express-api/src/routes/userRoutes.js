@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { register } = require("../controllers/userController");
+const { register, getUserInfo } = require("../controllers/userController");
 const { login } = require("../controllers/userController");
 const {
   validateUserLogin,
@@ -9,6 +9,7 @@ const {
 
 router.post("/register", validateUserRegister, register);
 router.post("/login", validateUserLogin, login);
+router.get("/info", getUserInfo);
 
 module.exports = router;
 

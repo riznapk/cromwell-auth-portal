@@ -1,5 +1,6 @@
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import logo from "../../../assets/images/logo.svg";
+import { Link } from "react-router-dom";
 import Banner from "./Banner";
 
 function Footer() {
@@ -7,12 +8,12 @@ function Footer() {
     <>
       <Banner />
       <Grid container spacing={3} sx={styles.container}>
-        <Grid item xs={12} md={5}>
+        <Grid component={Link} to="/" size={{ xs: 12, md: 5 }}>
           <Box component="img" src={logo} alt="Logo" sx={styles.logo} />
         </Grid>
 
         {/* Links section on the right, using flex for inline items */}
-        <Grid item xs={12} md={7}>
+        <Grid size={{ xs: 12, md: 7 }}>
           <Box
             display="flex"
             justifyContent="space-between"
@@ -20,101 +21,53 @@ function Footer() {
             sx={styles.footerLinkColumn}
           >
             <Box sx={styles.mainFooterSection}>
-              <Typography
-                component={Link}
-                to="/about"
-                sx={styles.mainFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.mainFooterLink}>
                 About
               </Typography>
-              <Typography
-                component={Link}
-                to="/about"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 About Us
               </Typography>
-              <Typography
-                component={Link}
-                to="/about"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Why Cromwell
               </Typography>
-              <Typography
-                component={Link}
-                to="/about"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Careers
               </Typography>
             </Box>
 
             <Box sx={styles.mainFooterSection}>
-              <Typography
-                component={Link}
-                to="/help"
-                sx={styles.mainFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.mainFooterLink}>
                 Help
               </Typography>
-              <Typography
-                component={Link}
-                to="/contact"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Contact Us
               </Typography>
-              <Typography
-                component={Link}
-                to="/returns"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Returns
               </Typography>
-              <Typography
-                component={Link}
-                to="/deliveries"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Our Deliveries
               </Typography>
-              <Typography
-                component={Link}
-                to="/customer-services"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Customer Services
               </Typography>
             </Box>
 
             <Box sx={styles.mainFooterSection}>
-              <Typography
-                component={Link}
-                to="/key-info"
-                sx={styles.mainFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.mainFooterLink}>
                 Key Information
               </Typography>
-              <Typography
-                component={Link}
-                to="/terms"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Terms and Conditions
               </Typography>
-              <Typography
-                component={Link}
-                to="/privacy"
-                sx={styles.subFooterLink}
-              >
+              <Typography component={Link} to="/wip" sx={styles.subFooterLink}>
                 Privacy and Cookies
               </Typography>
             </Box>
           </Box>
         </Grid>
       </Grid>
-      <Grid item xs={12} sx={styles.copyright}>
+      <Grid xs={12} sx={styles.copyright}>
         <Typography>© 2023 Cromwell. All rights reserved.</Typography>
       </Grid>
     </>
@@ -127,8 +80,9 @@ const styles = {
     borderTop: "2px solid #D8DFE1",
   },
   logo: {
-    height: "250px",
+    height: "auto",
     width: "250px",
+    alignSelf: "flex-start",
   },
   mainFooterLink: {
     textDecoration: "none",

@@ -1,43 +1,13 @@
 import InputField from "../../common/components/InputField";
 import { Box, Button, Container, Link, Paper, Typography } from "@mui/material";
-import { useForm, FormProvider } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-const validationSchema = yup.object().shape({
-  email: yup.string().required("Email Required").email("Invalid Email Format"),
-  password: yup
-    .string()
-    .required("Password Required")
-    .min(6, "Password must be at least 6 characters"),
-});
+import { FormProvider } from "react-hook-form";
+import { Link as RouterLink } from "react-router-dom";
+import SnackbarComponent from "../../common/components/SnackbarComponent";
+import { useLogin } from "./hooks/useLogin";
 
 function Login() {
-  const navigate = useNavigate();
-  const methods = useForm({
-    resolver: yupResolver(validationSchema),
-    mode: "onTouched",
-    reValidateMode: "onChange",
-  });
-
-  const onSubmit = async (data) => {
-    console.log(data);
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/user/login",
-        data,
-        { withCredentials: true }
-      );
-      console.log("Login response:", response);
-      // localStorage.setItem("token", response?.data?.token);
-      navigate("/");
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
-
+  const { snackbarOpen, setSnackbarOpen, snackbarMessage, methods, onSubmit } =
+    useLogin();
   return (
     <Container maxWidth="xs" sx={(styles.container, styles.paperContainer)}>
       {/* <Paper elevation={10} sx={styles.paperContainer}> */}
@@ -68,7 +38,12 @@ function Login() {
             sx={styles.inputField}
             fullWidth
           />
-          <Button variant="contained" sx={styles.button} type="submit">
+          <Button
+            variant="contained"
+            sx={styles.button}
+            type="submit"
+            disabled={!methods?.formState?.isValid}
+          >
             LOGIN
           </Button>
         </Box>
@@ -84,6 +59,13 @@ function Login() {
         </Link>
       </Typography>
       {/* </Paper> */}
+      <SnackbarComponent
+        open={snackbarOpen}
+        message={snackbarMessage}
+        onClose={() => setSnackbarOpen(false)}
+        position={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={4000}
+      />
     </Container>
   );
 }

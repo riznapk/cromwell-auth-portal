@@ -18,9 +18,6 @@ function InputField({
 
   const showError = !!errors && touchedFields;
 
-  {
-    console.log("errors", errors);
-  }
   return (
     <Controller
       name={name}

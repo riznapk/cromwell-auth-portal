@@ -1,4 +1,4 @@
-const { createUser } = require("../services/userService");
+const { createUser, getUserById } = require("../services/userService");
 const { loginUser } = require("../services/userService");
 
 exports.register = async (req, res) => {
@@ -23,7 +23,6 @@ exports.register = async (req, res) => {
     if (error.message == "User already exists") {
       return res.status(409).json({ message: error.message });
     }
-
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -33,7 +32,6 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const { user, token } = await loginUser({ email, password });
-    console.log("User logged in:", user, token);
 
     //cookie section
     const options = {
@@ -55,6 +53,16 @@ exports.login = async (req, res) => {
     if (error.message == "Invalid password") {
       return res.status(401).json({ message: error.message });
     }
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getUserInfo = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user = await getUserById(id);
+    res.status(200).json({ message: "success", user });
+  } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
