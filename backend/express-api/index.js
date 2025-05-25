@@ -4,6 +4,7 @@ const userRouter = require("./src/routes/userRoutes");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const errorHandler = require("./src/middlewares/errorHandler");
 
 dotenv.config();
 
@@ -19,5 +20,7 @@ app.use(cookieParser()); //for parsing cookies
 
 //routes
 app.use("/user", userRouter);
+
+app.use(errorHandler); // Custom error handler middleware
 
 app.listen(3000, () => console.log("Server running on port 3000"));

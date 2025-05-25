@@ -35,9 +35,6 @@ exports.createUser = async ({ firstName, lastName, email, password }) => {
     process.env.JWT_SECRET,
     { expiresIn: "2h" }
   );
-  // user.token = token;
-  // user.password = undefined; // Remove password from the response
-
   return { user: { ...user, password: undefined }, token };
 };
 
@@ -62,11 +59,6 @@ exports.loginUser = async ({ email, password }) => {
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
-
-    // user.token = token;
-    // Remove password from the response
-    // user.password = undefined;
-
     return { user: { ...user, password: undefined }, token };
   } else {
     throw new Error("Invalid password");
@@ -84,36 +76,4 @@ exports.getUserById = async (id) => {
     throw new Error("User not found");
   }
   return { ...user, password: undefined };
-};
-
-//Function to login a user
-exports.loginUser = async ({ email, password }) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  if (!user) {
-    throw new Error("User not found");
-  }
-  // Check if the password is correct
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (user && isPasswordValid) {
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
-
-    // user.token = token;
-    // Remove password from the response
-    // user.password = undefined;
-
-    return { user: { ...user, password: undefined }, token };
-  } else {
-    throw new Error("Invalid password");
-  }
 };
