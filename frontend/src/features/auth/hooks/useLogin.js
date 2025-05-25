@@ -19,9 +19,14 @@ export const useLogin = () => {
     resolver: yupResolver(validationSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data) => {
+    console.log("data", data);
     try {
       const response = await axios.post(
         "http://localhost:3000/user/login",
@@ -29,8 +34,10 @@ export const useLogin = () => {
         { withCredentials: true }
       );
       dispatch(addUserDetails(response?.data?.user));
+      methods.reset();
       navigate("/");
     } catch (error) {
+      console.error("Login error:", error);
       setSnackbarMessage(error?.response?.data?.message || "Login failed");
       setSnackbarOpen(true);
     }

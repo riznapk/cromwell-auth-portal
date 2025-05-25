@@ -7,6 +7,12 @@ import { store } from "../redux/store";
 import { theme } from "../themes/theme";
 import { router } from "../router/AppRouter";
 import { RouterProvider } from "react-router-dom";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
+
+afterEach(() => {
+  cleanup();
+});
 
 /**
  * Providers for rendering components in tests.

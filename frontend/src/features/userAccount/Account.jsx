@@ -1,15 +1,29 @@
 import React from "react";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import BasicTabs from "../../common/components/BasicTabs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AccountDetails from "./AccountDetails";
+import UnderConstruction from "../../common/components/UnderConstruction";
+import { clearUserDetails } from "../auth/slices/authSlice";
+import axios from "axios";
 
-const tabContent = ["Account Overview", "Purchases", "Profile", "Need Help"];
+const tabContent = [
+  { label: "Account Overview", component: <UnderConstruction /> },
+  { label: "Purchases", component: <UnderConstruction /> },
+  { label: "Profile", component: <AccountDetails /> },
+  {
+    label: "Need Help",
+    component: <UnderConstruction />,
+  },
+];
 
 function Account() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(2);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -17,6 +31,16 @@ function Account() {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleLogout = async () => {
+    await axios.post(
+      "http://localhost:3000/user/logout",
+      {},
+      { withCredentials: true }
+    );
+    dispatch(clearUserDetails());
+    navigate("/login");
+  };
 
   return (
     <Grid
@@ -26,9 +50,7 @@ function Account() {
     >
       <Grid
         item
-        xs={12}
-        sm={4}
-        md={3}
+        size={{ xs: 12, sm: 4, md: 3 }}
         sx={{
           ...styles.sidebar,
           borderRight: isSmallScreen ? "none" : styles.sidebar.borderRight,
@@ -39,7 +61,7 @@ function Account() {
           <PersonOutlineIcon sx={styles.userIcon} />
           <Box sx={styles.userDetailsBox}>
             <Typography>{`${user?.firstName} ${user?.lastName}`}</Typography>
-            <Box component={Link} sx={styles.logoutText}>
+            <Box component={Link} sx={styles.logoutText} onClick={handleLogout}>
               Logout
             </Box>
           </Box>
@@ -52,14 +74,10 @@ function Account() {
         />
       </Grid>
 
-      <Grid item xs={12} sm={8} md={9} sx={styles.contentBox}>
+      <Grid size={{ xs: 12, sm: 8, md: 9 }} sx={styles.contentBox}>
         <Box>
-          <Typography variant="h6">{tabContent[value]}</Typography>
-          <Box mt={2}>
-            <Typography>
-              This is the content for &quot;{tabContent[value]}&quot;
-            </Typography>
-          </Box>
+          <Typography variant="h6">{tabContent[value].label}</Typography>
+          <Box mt={2}>{tabContent[value].component}</Box>
         </Box>
       </Grid>
     </Grid>
@@ -87,6 +105,7 @@ const styles = {
     color: "primary.main",
   },
   contentBox: {
+    width: "100%",
     padding: 3,
   },
   logoutText: {
@@ -94,6 +113,10 @@ const styles = {
     fontSize: "0.875rem",
     color: "primary.main",
     cursor: "pointer",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
     mt: 0.5,
   },
   userDetailsBox: {

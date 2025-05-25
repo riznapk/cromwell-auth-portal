@@ -3,7 +3,7 @@ import { render } from "./tests/testUtil";
 import App from "./App";
 
 describe("App", () => {
-  it("should render successfully", () => {
+  it("testing the vitest", () => {
     const { baseElement } = render(<App />);
     expect(baseElement).toBeTruthy();
   });

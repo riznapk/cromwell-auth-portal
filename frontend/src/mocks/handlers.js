@@ -1,1 +1,2 @@
-export const handlers = [];
+import { authHandlers } from "./handlers/authHandlers";
+export const handlers = [...authHandlers];

@@ -11,6 +11,9 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs({ value, handleChange, isVertical }) {
+  {
+    console.log("value", value, typeof value);
+  }
   return (
     <Tabs
       orientation={isVertical ? "vertical" : "horizontal"}
@@ -28,12 +31,6 @@ export default function BasicTabs({ value, handleChange, isVertical }) {
   );
 }
 
-BasicTabs.propTypes = {
-  value: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  isVertical: PropTypes.bool,
-};
-
 const styles = {
   tabsVertical: {
     width: "100%",
@@ -41,4 +38,5 @@ const styles = {
   tabsHorizontal: {
     width: "100%",
   },
+  tabDecor: { color: "#000", alignSelf: "flex-start" },
 };

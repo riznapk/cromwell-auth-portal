@@ -16,7 +16,7 @@ function InputField({
     formState: { errors, touchedFields },
   } = useFormContext();
 
-  const showError = !!errors && touchedFields;
+  const showError = !!errors[name] && touchedFields[name];
 
   return (
     <Controller

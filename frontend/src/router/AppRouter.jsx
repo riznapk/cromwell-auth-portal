@@ -5,6 +5,7 @@ import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
 import UnderConstruction from "../common/components/UnderConstruction";
 import Account from "../features/userAccount/Account";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -23,13 +24,16 @@ export const router = createBrowserRouter([
         path: "/create-account",
         element: <Register />,
       },
+
       {
-        path: "/my-account",
-        element: <Account />,
-      },
-      {
-        path: "/wip",
-        element: <UnderConstruction />,
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/my-account", element: <Account /> },
+          {
+            path: "/wip",
+            element: <UnderConstruction />,
+          },
+        ],
       },
     ],
   },

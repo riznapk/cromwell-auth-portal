@@ -19,6 +19,13 @@ export const useRegister = () => {
     resolver: yupResolver(validationSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const onSubmit = async (data) => {
@@ -31,6 +38,7 @@ export const useRegister = () => {
         { withCredentials: true }
       );
       dispatch(addUserDetails(response?.data?.user));
+      methods.reset();
       navigate("/");
     } catch (error) {
       setSnackbarMessage(error?.response?.data?.message || "Register failed");
