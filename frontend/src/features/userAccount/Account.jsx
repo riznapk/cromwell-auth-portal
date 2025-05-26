@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountDetails from "./AccountDetails";
 import UnderConstruction from "../../common/components/UnderConstruction";
 import { clearUserDetails } from "../auth/slices/authSlice";
-import axios from "axios";
+import api from "../../api/apiConfig";
 
 const tabContent = [
   { label: "Account Overview", component: <UnderConstruction /> },
@@ -33,11 +33,7 @@ function Account() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleLogout = async () => {
-    await axios.post(
-      "http://localhost:3000/user/logout",
-      {},
-      { withCredentials: true }
-    );
+    await api.post("/user/logout", {}, { withCredentials: true });
     dispatch(clearUserDetails());
     navigate("/login");
   };

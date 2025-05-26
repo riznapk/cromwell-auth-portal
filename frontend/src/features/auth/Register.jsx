@@ -100,13 +100,13 @@ function Register() {
             REGISTER
           </Button>
           <Typography>
-            Not purchased from us before?{" "}
+            Already have an online account?{" "}
             <Link
               component={RouterLink}
               to="/login"
               sx={{ ...styles.typography, ...styles.typographyLink }}
             >
-              Register a new account here
+              Log in here
             </Link>
           </Typography>
         </Box>

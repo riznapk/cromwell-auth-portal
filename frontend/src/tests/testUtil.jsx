@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material";
 import { store } from "../redux/store";
 import { theme } from "../themes/theme";
 import { router } from "../router/AppRouter";
-import { RouterProvider } from "react-router-dom";
+import { MemoryRouter, RouterProvider } from "react-router-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
 
@@ -19,10 +19,10 @@ afterEach(() => {
  * Accepts an optional custom store for Redux testing.
  */
 // eslint-disable-next-line react-refresh/only-export-components
-const AllTheProviders = ({ customStore }) => (
+const AllTheProviders = ({ customStore, children }) => (
   <Provider store={customStore || store}>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <MemoryRouter>{children}</MemoryRouter>
     </ThemeProvider>
   </Provider>
 );

@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUserDetails } from "../slices/authSlice";
 import { useState } from "react";
 import { registerValidationSchema as validationSchema } from "../utils/formUtils";
+import api from "../../../api/apiConfig";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -32,11 +32,9 @@ export const useRegister = () => {
     // eslint-disable-next-line no-unused-vars
     const { confirmPassword, ...userData } = data;
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/register",
-        userData,
-        { withCredentials: true }
-      );
+      const response = await api.post("/user/register", userData, {
+        withCredentials: true,
+      });
       dispatch(addUserDetails(response?.data?.user));
       methods.reset();
       navigate("/");

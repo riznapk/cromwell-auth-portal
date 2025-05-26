@@ -2,10 +2,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import { addUserDetails } from "../slices/authSlice";
 import { useState } from "react";
 import { loginValidationSchema as validationSchema } from "../utils/formUtils";
+import api from "../../../api/apiConfig";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -28,11 +28,9 @@ export const useLogin = () => {
   const onSubmit = async (data) => {
     console.log("data", data);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/login",
-        data,
-        { withCredentials: true }
-      );
+      const response = await api.post("/user/login", data, {
+        withCredentials: true,
+      });
       dispatch(addUserDetails(response?.data?.user));
       methods.reset();
       navigate("/");

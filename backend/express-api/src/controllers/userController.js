@@ -43,8 +43,7 @@ exports.login = async (req, res, next) => {
 
 exports.getUserInfo = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    const user = await getUserById(id);
+    const user = await getUserById(req.user.id);
     res.status(200).json({ message: "success", user });
   } catch (error) {
     next(error);

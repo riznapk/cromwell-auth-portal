@@ -67,7 +67,7 @@ function Footer() {
           </Box>
         </Grid>
       </Grid>
-      <Grid xs={12} sx={styles.copyright}>
+      <Grid sx={styles.copyright}>
         <Typography>© 2023 Cromwell. All rights reserved.</Typography>
       </Grid>
     </>

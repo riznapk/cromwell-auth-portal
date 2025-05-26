@@ -7,10 +7,11 @@ const {
   validateUserLogin,
   validateUserRegister,
 } = require("../middlewares/userInputValidator");
+const { verifyToken } = require("../middlewares/auth");
 
 router.post("/register", validateUserRegister, register);
 router.post("/login", validateUserLogin, login);
 router.post("/logout", logout);
-router.get("/info", getUserInfo);
+router.get("/info", verifyToken, getUserInfo);
 
 module.exports = router;
