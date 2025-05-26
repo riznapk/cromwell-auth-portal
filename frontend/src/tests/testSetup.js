@@ -12,7 +12,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
 
-// Make them global
+//global
 globalThis.expect = expect;
 globalThis.vi = vi;
 globalThis.render = render;

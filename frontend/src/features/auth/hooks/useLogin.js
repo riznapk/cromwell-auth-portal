@@ -26,7 +26,6 @@ export const useLogin = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log("data", data);
     try {
       const response = await api.post("/user/login", data, {
         withCredentials: true,

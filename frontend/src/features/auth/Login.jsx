@@ -8,9 +8,9 @@ import { useLogin } from "./hooks/useLogin";
 function Login() {
   const { snackbarOpen, setSnackbarOpen, snackbarMessage, methods, onSubmit } =
     useLogin();
+
   return (
     <Container maxWidth="xs" sx={(styles.container, styles.paperContainer)}>
-      {/* <Paper elevation={10} sx={styles.paperContainer}> */}
       <Typography variant="h5" sx={styles.typography}>
         Login
       </Typography>
@@ -58,7 +58,7 @@ function Login() {
           Register a new account here
         </Link>
       </Typography>
-      {/* </Paper> */}
+
       <SnackbarComponent
         open={snackbarOpen}
         message={snackbarMessage}

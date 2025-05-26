@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { userEvent } from "@testing-library/user-event";
-import { render, screen } from "../../../tests/testUtil";
+import { render, screen, waitFor } from "../../../tests/testUtil";
 import Login from "../Login";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import Home from "../../home/Home";
 
 describe("Login Page", () => {
   it("should render login text as heading", () => {
-    //   renderAtLoginRoute();
     render(<Login />);
-    screen.debug();
     const heading = screen.getByRole("heading");
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent(/login/i);
@@ -46,18 +46,6 @@ describe("Login Page", () => {
     expect(passwordInput).toHaveAttribute("type", "password");
   });
 
-  //   it("should logs in successfully and shows no error", async () => {
-  //     render(<Login />);
-
-  //     const user = userEvent.setup();
-  //     await user.type(screen.getByLabelText(/email/i), "johndoe@gmail.com");
-  //     await user.type(screen.getByLabelText(/password/i), "123456");
-  //     await user.click(screen.getByRole("button", { name: /login/i }));
-
-  //     const myAccount = await screen.findByText(/my account/i);
-  //     expect(myAccount).toBeInTheDocument();
-  //   });
-
   it("should apply validation checks to the form fields", async () => {
     render(<Login />);
 
@@ -93,5 +81,33 @@ describe("Login Page", () => {
 
     expect(registerLink).toBeInTheDocument();
     expect(registerLink).toHaveAttribute("href", "/create-account");
+  });
+
+  it("should login successfully and navigate to home page", async () => {
+    const user = userEvent.setup();
+    const routes = [
+      { path: "/login", element: <Login /> },
+      { path: "/", element: <Home /> },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
+    render(<Login />, { router });
+    // const Wrapper = () => (
+    //   <Provider store={store}>
+    //     <ThemeProvider theme={theme}>
+    //       <RouterProvider router={router} />
+    //     </ThemeProvider>
+    //   </Provider>
+    // );
+    // routerRender(<Wrapper />);
+
+    await user.type(screen.getByLabelText(/email/i), "johndoe@gmail.com");
+    await user.type(screen.getByLabelText(/password/i), "Password123!");
+    await user.click(screen.getByRole("button", { name: /login/i }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/let’s get you the right tools/i)
+      ).toBeInTheDocument()
+    );
   });
 });

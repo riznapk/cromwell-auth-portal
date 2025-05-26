@@ -5,7 +5,6 @@ import { render } from "@testing-library/react";
 import { ThemeProvider } from "@mui/material";
 import { store } from "../redux/store";
 import { theme } from "../themes/theme";
-import { router } from "../router/AppRouter";
 import { MemoryRouter, RouterProvider } from "react-router-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
@@ -19,24 +18,33 @@ afterEach(() => {
  * Accepts an optional custom store for Redux testing.
  */
 // eslint-disable-next-line react-refresh/only-export-components
-const AllTheProviders = ({ customStore, children }) => (
-  <Provider store={customStore || store}>
-    <ThemeProvider theme={theme}>
-      <MemoryRouter>{children}</MemoryRouter>
-    </ThemeProvider>
-  </Provider>
-);
+const AllTheProviders = ({ customStore, router = null, children }) => {
+  const content = (
+    <Provider store={customStore || store}>
+      <ThemeProvider theme={theme}>
+        {router ? (
+          <RouterProvider router={router}>{children}</RouterProvider>
+        ) : (
+          <MemoryRouter>{children}</MemoryRouter>
+        )}
+      </ThemeProvider>
+    </Provider>
+  );
+  return content;
+};
 
 /**
  * Custom render function for tests.
  * Allows providing a custom Redux store for testing components that interact with Redux.
  */
 const customRender = (ui, options) => {
-  const { customStore, ...renderOptions } = options || {};
+  const { customStore, router, ...renderOptions } = options || {};
 
   return render(ui, {
     wrapper: ({ children }) => (
-      <AllTheProviders customStore={customStore}>{children}</AllTheProviders>
+      <AllTheProviders customStore={customStore} router={router}>
+        {children}
+      </AllTheProviders>
     ),
     ...renderOptions,
   });

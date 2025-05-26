@@ -4,9 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { is } = require("type-is");
 
-// Function to create a new user
+/**
+ * Creates a new user in the database.
+ * - Checks if the user already exists by email.
+ * - Hashes the password before storing.
+ * - Generates a JWT token upon successful creation.
+ * @param {Object} userDetails - User's first name, last name, email, and password.
+ * @returns {Object} Newly created user (excluding password) and a JWT token.
+ */
 exports.createUser = async ({ firstName, lastName, email, password }) => {
-  // Check if the user already exists
   const existingUser = await prisma.user.findUnique({
     where: {
       email,
@@ -15,9 +21,7 @@ exports.createUser = async ({ firstName, lastName, email, password }) => {
   if (existingUser) {
     throw new Error("User already exists");
   }
-  // Hash the password
   const hashedPassword = await bcrypt.hash(password, 10);
-  // Create the user
   const user = await prisma.user.create({
     data: {
       firstName,
@@ -26,7 +30,6 @@ exports.createUser = async ({ firstName, lastName, email, password }) => {
       password: hashedPassword,
     },
   });
-  // Generate a token for the user
   const token = jwt.sign(
     {
       id: user.id,
@@ -38,7 +41,14 @@ exports.createUser = async ({ firstName, lastName, email, password }) => {
   return { user: { ...user, password: undefined }, token };
 };
 
-// Function to login a user
+/**
+ * Logs in a user by verifying email and password.
+ * - Retrieves user by email.
+ * - Compares hashed password.
+ * - Returns JWT token if credentials are valid.
+ * @param {Object} loginDetails - User's email and password.
+ * @returns {Object} User (excluding password) and a JWT token.
+ */
 exports.loginUser = async ({ email, password }) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -48,7 +58,6 @@ exports.loginUser = async ({ email, password }) => {
   if (!user) {
     throw new Error("User not found");
   }
-  // Check if the password is correct
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (user && isPasswordValid) {
     const token = jwt.sign(
@@ -65,7 +74,12 @@ exports.loginUser = async ({ email, password }) => {
   }
 };
 
-// Function to get user details by ID
+/**
+ * Retrieves a user's information based on their ID.
+ * - Excludes the password from the returned user data.
+ * @param {string} id - User ID.
+ * @returns {Object} User details without the password.
+ */
 exports.getUserById = async (id) => {
   const user = await prisma.user.findUnique({
     where: {

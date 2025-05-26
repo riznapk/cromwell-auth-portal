@@ -20,7 +20,6 @@ function Home() {
           withCredentials: true,
         });
         dispatch(addUserDetails(response.data.user));
-        console.log("User details fetched successfully:", response.data);
       }
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -33,11 +32,13 @@ function Home() {
 
   return (
     <>
-      <Box sx={{ textAlign: "center", my: 4 }}>
-        <Typography variant="h5">
-          Hello {user?.firstName}, Let’s get you the right tools for the job.
-        </Typography>
-      </Box>
+      {user ? (
+        <Box sx={{ textAlign: "center", my: 4 }}>
+          <Typography variant="h5">
+            Hello {user?.firstName}, Let’s get you the right tools for the job.
+          </Typography>
+        </Box>
+      ) : null}
       <Grid
         container
         justifyContent="space-around"

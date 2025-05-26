@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "../../../tests/testUtil";
+import { render, screen, waitFor } from "../../../tests/testUtil";
 import Register from "../Register";
 import userEvent from "@testing-library/user-event";
+import { createMemoryRouter } from "react-router-dom";
+import Home from "../../home/Home";
 
 describe("Register Page", () => {
   it("should render register text as heading", () => {
@@ -56,23 +58,6 @@ describe("Register Page", () => {
     expect(passwordInput).toHaveAttribute("type", "password");
   });
 
-  // it("should register successfully and shows no error", async () => {
-  //   render(<Register />);
-  //   const user = userEvent.setup();
-
-  //   await user.type(screen.getByLabelText(/first name/i), "john");
-  //   await user.type(screen.getByLabelText(/last name/i), "doe");
-  //   await user.type(screen.getByLabelText(/email/i), "john@example.com");
-  //   const passwordInputs = screen.getAllByLabelText(/password/i);
-  //   await user.type(passwordInputs[0], "Password123!"); // Password
-  //   await user.type(passwordInputs[1], "Password123!"); // Confirm Password
-  //   await user.click(screen.getByRole("button", { name: /register/i }));
-
-  //   await waitFor(() => {
-  //     expect(screen.getByText(/My account/i)).toBeInTheDocument();
-  //   });
-  // });
-
   it("should apply validation checks to the form fields", async () => {
     render(<Register />);
 
@@ -109,5 +94,31 @@ describe("Register Page", () => {
 
     expect(loginLink).toBeInTheDocument();
     expect(loginLink).toHaveAttribute("href", "/login");
+  });
+
+  it("should register successfully and navigate to home page", async () => {
+    const user = userEvent.setup();
+    const routes = [
+      { path: "/create-account", element: <Register /> },
+      { path: "/", element: <Home /> },
+    ];
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/create-account"],
+    });
+    render(<Register />, { router });
+
+    await user.type(screen.getByLabelText(/first name/i), "john");
+    await user.type(screen.getByLabelText(/last name/i), "doe");
+    await user.type(screen.getByLabelText(/email/i), "john@example.com");
+    const passwordInputs = screen.getAllByLabelText(/password/i);
+    await user.type(passwordInputs[0], "Password123!"); // Password
+    await user.type(passwordInputs[1], "Password123!"); // Confirm Password
+    await user.click(screen.getByRole("button", { name: /register/i }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/let’s get you the right tools/i)
+      ).toBeInTheDocument()
+    );
   });
 });

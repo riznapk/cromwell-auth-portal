@@ -11,9 +11,6 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs({ value, handleChange, isVertical }) {
-  {
-    console.log("value", value, typeof value);
-  }
   return (
     <Tabs
       orientation={isVertical ? "vertical" : "horizontal"}
