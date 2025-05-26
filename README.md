@@ -32,7 +32,7 @@ Navigate to the backend directory and start the Docker containers:
 
 ```bash
 cd backend
-docker compose up --build -d ⁠
+docker compose up --build -d
 ```
 
 This will start:
